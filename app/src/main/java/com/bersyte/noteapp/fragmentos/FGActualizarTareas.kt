@@ -9,21 +9,24 @@ import androidx.navigation.fragment.navArgs
 import com.bersyte.noteapp.MainActivity
 import com.bersyte.noteapp.R
 import com.bersyte.noteapp.databinding.FgActualizarNotaBinding
+import com.bersyte.noteapp.databinding.FgActualizarTareaBinding
 import com.bersyte.noteapp.model.Note
+import com.bersyte.noteapp.model.Tarea
 import com.bersyte.noteapp.toast
 import com.bersyte.noteapp.viewmodel.NoteViewModel
+import com.bersyte.noteapp.viewmodel.TareaViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class FGActualizarNotas : Fragment(R.layout.fg_actualizar_nota) {
+class FGActualizarTareas : Fragment(R.layout.fg_actualizar_tarea) {
 
-    private var _binding: FgActualizarNotaBinding? = null
+    private var _binding: FgActualizarTareaBinding? = null
     private val binding get() = _binding!!
 
-    private val args: FGActualizarNotasArgs by navArgs()
-    private lateinit var currentNote: Note
-    private lateinit var noteViewModel: NoteViewModel
+    private val args: FGActualizarTareasArgs by navArgs()
+    private lateinit var currentTarea: Tarea
+    private lateinit var tareaViewModel: TareaViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +38,7 @@ class FGActualizarNotas : Fragment(R.layout.fg_actualizar_nota) {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FgActualizarNotaBinding.inflate(
+        _binding = FgActualizarTareaBinding.inflate(
             inflater,
             container,
             false
@@ -46,29 +49,29 @@ class FGActualizarNotas : Fragment(R.layout.fg_actualizar_nota) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        noteViewModel = (activity as MainActivity).noteViewModel
-        currentNote = args.note!!
+        tareaViewModel = (activity as MainActivity).tareaViewModel
+        currentTarea = args.tarea!!
 
         var currentDate:String? = null
         val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
         currentDate = sdf.format(Date())
 
-        binding.etNoteBodyUpdate.setText(currentNote.noteBody)
-        binding.tvNoteDateUpdate.setText(currentDate)
-        binding.etNoteSubTitleUpdate.setText(currentNote.noteSubTitle)
-        binding.etNoteTitleUpdate.setText(currentNote.noteTitle)
+        binding.etTareaBodyUpdate.setText(currentTarea.tareaBody)
+        binding.tvTareaDateUpdate.setText(currentDate)
+        binding.etTareaSubTitleUpdate.setText(currentTarea.tareaSubTitle)
+        binding.etTareaTitleUpdate.setText(currentTarea.tareaTitle)
 
         binding.fabDone.setOnClickListener {
-            val title = binding.etNoteTitleUpdate.text.toString().trim()
-            val subTitle = binding.etNoteSubTitleUpdate.text.toString().trim()
-            val date = binding.tvNoteDateUpdate.text.toString().trim()
-            val body = binding.etNoteBodyUpdate.text.toString().trim()
+            val title = binding.etTareaTitleUpdate.text.toString().trim()
+            val subTitle = binding.etTareaSubTitleUpdate.text.toString().trim()
+            val date = binding.tvTareaDateUpdate.text.toString().trim()
+            val body = binding.etTareaBodyUpdate.text.toString().trim()
 
             if (title.isNotEmpty()) {
-                val note = Note(currentNote.id, title, subTitle, date, body)
-                noteViewModel.actualizarNota(note)
+                val tarea = Tarea(currentTarea.id, title, subTitle, date, body)
+                tareaViewModel.actualizarTarea(tarea)
 
-                view.findNavController().navigate(R.id.action_updateNoteFragment_to_homeFragment)
+                view.findNavController().navigate(R.id.action_updateTareaFragment_to_homeFragment)
 
             } else {
                 activity?.toast("Ingresa un Titulo")
@@ -81,7 +84,7 @@ class FGActualizarNotas : Fragment(R.layout.fg_actualizar_nota) {
             setTitle("Borrar nota")
             setMessage("¿Seguro que deseas eliminar la nota?")
             setPositiveButton("Eliminar") { _, _ ->
-                noteViewModel.borrarNota(currentNote)
+                tareaViewModel.borrarTarea(currentTarea)
                 view?.findNavController()?.navigate(
                     R.id.action_updateNoteFragment_to_homeFragment
                 )
