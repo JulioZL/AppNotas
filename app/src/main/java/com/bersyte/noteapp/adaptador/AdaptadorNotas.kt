@@ -24,6 +24,7 @@ class AdaptadorNotas : RecyclerView.Adapter<AdaptadorNotas.NoteViewHolder>() {
             override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
                 return oldItem.id == newItem.id &&
                         oldItem.noteBody == newItem.noteBody &&
+                        oldItem.notetvDate == newItem.notetvDate &&
                         oldItem.noteSubTitle == newItem.noteSubTitle &&
                         oldItem.noteTitle == newItem.noteTitle
             }
@@ -50,13 +51,15 @@ class AdaptadorNotas : RecyclerView.Adapter<AdaptadorNotas.NoteViewHolder>() {
 
         holder.itemBinding.tvNoteTitle.text = currentNote.noteTitle
         holder.itemBinding.tvNoteSubTitle.text = currentNote.noteSubTitle
+        holder.itemBinding.tvNoteDate.text = currentNote.notetvDate
         holder.itemBinding.tvNoteBody.text = currentNote.noteBody
         val random = Random()
-        val color =
+        /*val color =
             Color.argb(
                 255, random.nextInt(256),
                 random.nextInt(256), random.nextInt(256)
-            )
+            )*/
+        val color = Color.BLUE
         holder.itemBinding.ibColor.setBackgroundColor(color)
 
         holder.itemView.setOnClickListener { view ->

@@ -33,12 +33,12 @@
             android:background="@color/white">
 
             <EditText
-                android:id="@+id/etNoteTitle"
+                android:id="@+id/etTareaTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:ems="10"
-                android:hint="Titulo"
+                android:hint="Titulo Tarea"
                 android:inputType="text"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
@@ -46,7 +46,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/etNoteSubTitle"
+                android:id="@+id/etTareaSubTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -61,7 +61,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvDate"
+                android:id="@+id/tvDateTarea"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -74,7 +74,7 @@
                 android:focusableInTouchMode="false"/>
 
             <EditText
-                android:id="@+id/etNoteBody"
+                android:id="@+id/etTareaBody"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"

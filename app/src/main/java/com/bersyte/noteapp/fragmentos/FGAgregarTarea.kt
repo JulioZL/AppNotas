@@ -1,29 +1,25 @@
 package com.bersyte.noteapp.fragmentos
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.*
-import android.widget.DatePicker
-import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.bersyte.noteapp.MainActivity
 import com.bersyte.noteapp.R
-import com.bersyte.noteapp.databinding.FgAgregarNotaBinding
-import com.bersyte.noteapp.model.Note
+import com.bersyte.noteapp.databinding.FgAgregarTareaBinding
+import com.bersyte.noteapp.model.Tarea
 import com.bersyte.noteapp.toast
-import com.bersyte.noteapp.viewmodel.NoteViewModel
+import com.bersyte.noteapp.viewmodel.TareaViewModel
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class FGAgregarNota : Fragment(R.layout.fg_agregar_nota) {
+class FGAgregarTarea : Fragment(R.layout.fg_agregar_tarea) {
 
-    private var _binding: FgAgregarNotaBinding? = null
+    private var _binding: FgAgregarTareaBinding? = null
     private val binding get() = _binding!!
-    private lateinit var noteViewModel: NoteViewModel
+    private lateinit var tareaViewModel: TareaViewModel
     private lateinit var mView: View
 
     //fecha
@@ -39,7 +35,7 @@ class FGAgregarNota : Fragment(R.layout.fg_agregar_nota) {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FgAgregarNotaBinding.inflate(
+        _binding = FgAgregarTareaBinding.inflate(
             inflater,
             container,
             false
@@ -48,32 +44,33 @@ class FGAgregarNota : Fragment(R.layout.fg_agregar_nota) {
         val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
 
         currentDate = sdf.format(Date())
-        binding.tvDate.text = currentDate
+        binding.tvDateTarea.text = currentDate
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        noteViewModel = (activity as MainActivity).noteViewModel
+        tareaViewModel = (activity as MainActivity).tareaViewModel
         mView = view
     }
 
-    private fun saveNote(view: View) {
-        val noteTitle = binding.etNoteTitle.text.toString().trim()
-        val noteSubTitle = binding.etNoteSubTitle.text.toString().trim()
-        val notetvDate = binding.tvDate.text.toString().trim()
-        val noteBody = binding.etNoteBody.text.toString().trim()
+    private fun saveTarea(view: View) {
+        val tareaTitle = binding.etTareaTitle.text.toString().trim()
+        val tareaSubTitle = binding.etTareaSubTitle.text.toString().trim()
+        val tareatvDate = binding.tvDateTarea.text.toString().trim()
+        val tareaBody = binding.etTareaBody.text.toString().trim()
 
-        if (noteTitle.isNotEmpty()) {
-            val note = Note(0, noteTitle, noteSubTitle, notetvDate, noteBody)
+        if (tareaTitle.isNotEmpty()) {
+            val tarea = Tarea(0, tareaTitle, tareaSubTitle, tareatvDate, tareaBody)
 
-            noteViewModel.agregarNota(note)
+            tareaViewModel.agregarTarea(tarea)
             Snackbar.make(
                 view, "Nota guardada.",
                 Snackbar.LENGTH_SHORT
             ).show()
-            view.findNavController().navigate(R.id.action_newNoteFragment_to_homeFragment)
+            //arreglar grafo
+            view.findNavController().navigate(R.id.action_newTareaFragment_to_homeFragment)
 
         } else {
             activity?.toast("Ingresa un Titulo")
@@ -89,7 +86,7 @@ class FGAgregarNota : Fragment(R.layout.fg_agregar_nota) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_save -> {
-                saveNote(mView)
+                saveTarea(mView)
             }
         }
         return super.onOptionsItemSelected(item)
