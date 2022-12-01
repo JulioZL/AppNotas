@@ -6,4 +6,11 @@
     <string name="title">Title</string>
     <string name="message">Message</string>
     <string name="schedule_notification">Schedule Notification</string>
+
+    <string name="alerta_borrarIMG_titulo">Eliminar Foto</string>
+    <string name="alerta_borrarIMG_mensaje">¿Estas seguro de querer borrar la foto?</string>
+    <string name="cancelar">CANCELAR</string>
+    <string name="aceptar">ACEPTAR</string>
+    <string name="alerta_borrarVIDEO_titulo">Eliminar video</string>
+    <string name="alerta_borrarVIDEO_mensaje">¿Estas seguro de querer eliminar el video?</string>
 </resources>

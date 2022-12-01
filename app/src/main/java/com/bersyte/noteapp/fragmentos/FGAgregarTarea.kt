@@ -39,16 +39,12 @@ class FGAgregarTarea : Fragment(R.layout.fg_agregar_tarea) {
     private lateinit var tareaViewModel: TareaViewModel
     private lateinit var mView: View
 
-
     //fecha
     var currentDate:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
-        //createNotificationChannel()
-
     }
 
     override fun onCreateView(
