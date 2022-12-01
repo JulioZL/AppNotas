@@ -79,14 +79,14 @@ class FGActualizarTareas : Fragment(R.layout.fg_actualizar_tarea) {
         }
     }
 
-    private fun deleteNote() {
+    private fun deleteTarea() {
         AlertDialog.Builder(activity).apply {
             setTitle("Borrar nota")
             setMessage("¿Seguro que deseas eliminar la nota?")
             setPositiveButton("Eliminar") { _, _ ->
                 tareaViewModel.borrarTarea(currentTarea)
                 view?.findNavController()?.navigate(
-                    R.id.action_updateNoteFragment_to_homeFragment
+                    R.id.action_updateTareaFragment_to_homeFragment
                 )
             }
             setNegativeButton("Cancelar", null)
@@ -104,7 +104,7 @@ class FGActualizarTareas : Fragment(R.layout.fg_actualizar_tarea) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_delete -> {
-                deleteNote()
+                deleteTarea()
             }
         }
 

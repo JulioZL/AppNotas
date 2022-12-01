@@ -8,31 +8,13 @@
     android:id="@+id/home_frag"
     android:background="@color/background_white"
     tools:context=".fragmentos.FGInicio">
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddNote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="32dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:clickable="true"
-        android:contentDescription="@string/image"
-        android:tintMode="@color/white"
-        app:borderWidth="0dp"
-        app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_add"
-
-        android:onClick="showPopup"
-        />
+    //com.google.android.material.floatingactionbutton.FloatingActionButton
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +30,7 @@
         app:cardCornerRadius="10dp"
         android:layout_margin="32dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintBottom_toTopOf="@+id/fabAddNote"
+        app:layout_constraintBottom_toTopOf="@+id/fabAdd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -59,13 +41,50 @@
         android:id="@+id/switch2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="60dp"
+        android:text="Tareas/Notas"
         android:textColor="@color/black"
-        android:text="Notas/Tareas"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/fabAddNote"
-        app:layout_constraintHorizontal_bias="0.913"
+        app:layout_constraintEnd_toStartOf="@+id/fabAdd"
+        app:layout_constraintHorizontal_bias="0.326"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/fabAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:clickable="true"
+        android:contentDescription="@string/image"
+        android:tintMode="@color/white"
+        app:borderWidth="0dp"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_add"
+
+        >
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAddTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/colorAccent"
+            app:fab_icon="@drawable/ic_addnote"
+            app:fab_size="mini" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAddNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/colorAccent"
+            app:fab_icon="@drawable/ic_addnote"
+            app:fab_size="mini" />
+
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

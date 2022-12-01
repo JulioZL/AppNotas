@@ -2,7 +2,10 @@ package com.bersyte.noteapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.bersyte.noteapp.databinding.ActivityMainBinding
 import com.bersyte.noteapp.db.NoteDatabase
 import com.bersyte.noteapp.db.TareaDatabase
@@ -15,51 +18,70 @@ import com.bersyte.noteapp.viewmodel.TareaViewModelProviderFactory
 
 class MainActivity : AppCompatActivity() {
 
+
+    lateinit var navController:NavController
     private lateinit var binding: ActivityMainBinding
     lateinit var noteViewModel: NoteViewModel
 
     lateinit var tareaViewModel: TareaViewModel
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+        //navController=supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container)!!
+          //  .findNavController()
+
 
         setUpViewModel()
         setUpViewModelTarea()
+
+    }
+
+    override fun onBackPressed() {
+        if (navController.currentDestination?.id == R.id.updateNoteFragment) {
+            this.toast("No Updates")
+        }
+        super.onBackPressed()
     }
 
     private fun setUpViewModel() {
-        val repositorioNotas = RepositorioNotas(
-            NoteDatabase(this)
+        val noteDataBase = NoteDatabase.getInstance(this)
+        val noteRepository = RepositorioNotas(
+            noteDataBase
         )
 
-        val viewModelProviderFactory =
-            NoteViewModelProviderFactory(
-                application, repositorioNotas
-            )
+        val viewModelProviderFactory = NoteViewModelProviderFactory(
+            application,
+            noteRepository
+        )
 
         noteViewModel = ViewModelProvider(
             this,
             viewModelProviderFactory
-        ).get(NoteViewModel::class.java)
+        )
+            .get(NoteViewModel::class.java)
     }
 
     private fun setUpViewModelTarea() {
-        val repositorioTareas = RepositorioTareas(
-            TareaDatabase(this)
+        val tareaDataBase = TareaDatabase.getInstance(this)
+        val tareaRepository = RepositorioTareas(
+            tareaDataBase
         )
 
-        val viewModelProviderFactory =
-            TareaViewModelProviderFactory(
-                application, repositorioTareas
-            )
+        val viewModelProviderFactory = TareaViewModelProviderFactory(
+            application,
+            tareaRepository
+        )
 
         tareaViewModel = ViewModelProvider(
             this,
             viewModelProviderFactory
-        ).get(TareaViewModel::class.java)
+        )
+            .get(TareaViewModel::class.java)
     }
 
 }

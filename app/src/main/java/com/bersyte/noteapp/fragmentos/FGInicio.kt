@@ -1,13 +1,8 @@
-  package com.bersyte.noteapp.fragmentos
+package com.bersyte.noteapp.fragmentos
 
 import android.os.Bundle
 import android.view.*
-import android.widget.ImageView
-import android.widget.PopupMenu
-import android.widget.Switch
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -16,23 +11,20 @@ import com.bersyte.noteapp.MainActivity
 import com.bersyte.noteapp.R
 import com.bersyte.noteapp.adaptador.AdaptadorNotas
 import com.bersyte.noteapp.adaptador.AdaptadorTareas
-import com.bersyte.noteapp.databinding.ActivityMainBinding.inflate
 import com.bersyte.noteapp.databinding.FgInicioBinding
-import com.bersyte.noteapp.model.Note
-import com.bersyte.noteapp.model.Tarea
 import com.bersyte.noteapp.viewmodel.NoteViewModel
 import com.bersyte.noteapp.viewmodel.TareaViewModel
-import com.google.android.material.snackbar.Snackbar
 
 
-  class FGInicio : Fragment(R.layout.fg_inicio),
-    SearchView.OnQueryTextListener {
-      private var _binding: FgInicioBinding? = null
-      private val binding get() = _binding!!
-      private lateinit var notesViewModel: NoteViewModel
-      private lateinit var adaptadorNotas: AdaptadorNotas
-      private lateinit var tareasViewModel: TareaViewModel
-      private lateinit var adaptadorTareas: AdaptadorTareas
+class FGInicio : Fragment(), SearchView.OnQueryTextListener {
+    private var _binding: FgInicioBinding? = null
+    private val binding
+        get() = _binding!!
+    private lateinit var noteViewModel: NoteViewModel
+    private lateinit var taskViewModel: TareaViewModel
+    private lateinit var taskAdapter: AdaptadorTareas
+    private lateinit var noteAdapter: AdaptadorNotas
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,14 +36,48 @@ import com.google.android.material.snackbar.Snackbar
         savedInstanceState: Bundle?
     ): View {
         _binding = FgInicioBinding.inflate(inflater, container, false)
+
+        noteViewModel = (activity as MainActivity).noteViewModel
+        taskViewModel = (activity as MainActivity).tareaViewModel
+
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        notesViewModel = (activity as MainActivity).noteViewModel
-        tareasViewModel = (activity as MainActivity).tareaViewModel
+    private fun setUpRecyclerView() {
+        noteAdapter = AdaptadorNotas()
+        binding.recyclerView.apply {
+            layoutManager = StaggeredGridLayoutManager(
+                2,
+                StaggeredGridLayoutManager.VERTICAL
+            )
+            setHasFixedSize(true)
+            adapter = noteAdapter
+            noteViewModel.getAllNote().observe(viewLifecycleOwner) { notes ->
+                noteAdapter.differ.submitList(notes)
+                notes.updateUI()
+            }
+        }
+    }
 
+    private fun setUpRecyclerView2() {
+        taskAdapter = AdaptadorTareas()
+        binding.recyclerView.apply {
+            layoutManager = StaggeredGridLayoutManager(
+                2,
+                StaggeredGridLayoutManager.VERTICAL
+            )
+            setHasFixedSize(true)
+            adapter = taskAdapter
+            taskViewModel.getAllTarea().observe(viewLifecycleOwner) { tareas ->
+                taskAdapter.differ.submitList(tareas)
+                tareas.updateUI()
+            }
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        if(!binding.switch2.isChecked) setUpRecyclerView2()
         binding.switch2.setOnCheckedChangeListener{ buttonView, isChecked ->
             if(isChecked){
                 setUpRecyclerView()
@@ -60,141 +86,72 @@ import com.google.android.material.snackbar.Snackbar
                 setUpRecyclerView2()
             }
         }
-
+        super.onViewCreated(view, savedInstanceState)
         binding.fabAddNote.setOnClickListener {
-            mostrarPopUp(view)
+            view.findNavController().navigate(R.id.action_homeFragment_to_newNoteFragment)
+        }
+
+        binding.fabAddTask.setOnClickListener {
+            view.findNavController().navigate(R.id.action_homeFragment_to_newTareaFragment)
         }
     }
-
-
-    //crear funcion para mostrar el PopUp
-    fun mostrarPopUp(v : View){
-        this.context?.let {
-            PopupMenu(it, v).apply {
-                inflate(R.menu.menu_emergente)
-                setOnMenuItemClickListener {
-                    when(it!!.itemId){
-                        R.id.agregarNota -> {
-                            v.findNavController().navigate(R.id.action_homeFragment_to_newNoteFragment)
-                            true
-                        }
-                        R.id.agregarTarea -> {
-                            v.findNavController().navigate(R.id.action_homeFragment_to_newTareaFragment)
-                            true
-                        }
-                        else -> false
-                    }
-                }
-            }.show()
-        }
-    }
-
-    private fun setUpRecyclerView() {
-        adaptadorNotas = AdaptadorNotas()
-
-        binding.recyclerView.apply {
-            layoutManager = StaggeredGridLayoutManager(
-                2,
-                StaggeredGridLayoutManager.VERTICAL
-            )
-            setHasFixedSize(true)
-            adapter = adaptadorNotas
-        }
-
-        activity?.let {
-            notesViewModel.getAllNote().observe(viewLifecycleOwner, { note ->
-                adaptadorNotas.differ.submitList(note)
-                updateUI(note)
-            })
-
-        }
-    }
-
-      private fun setUpRecyclerView2() {
-          adaptadorTareas = AdaptadorTareas()
-
-          binding.recyclerView.apply {
-              layoutManager = StaggeredGridLayoutManager(
-                  2,
-                  StaggeredGridLayoutManager.VERTICAL
-              )
-              setHasFixedSize(true)
-              adapter = adaptadorTareas
-          }
-
-          activity?.let {
-              tareasViewModel.getAllTarea().observe(viewLifecycleOwner, { tarea ->
-                  adaptadorTareas.differ.submitList(tarea)
-                  updateUI2(tarea)
-              })
-
-          }
-      }
-
-    private fun updateUI(note: List<Note>) {
-        if (note.isNotEmpty()) {
-            binding.cardView.visibility = View.GONE
-            binding.recyclerView.visibility = View.VISIBLE
-        } else {
-            binding.cardView.visibility = View.VISIBLE
-            binding.recyclerView.visibility = View.GONE
-        }
-    }
-
-      private fun updateUI2(tarea: List<Tarea>) {
-          if (tarea.isNotEmpty()) {
-              binding.cardView.visibility = View.GONE
-              binding.recyclerView.visibility = View.VISIBLE
-          } else {
-              binding.cardView.visibility = View.VISIBLE
-              binding.recyclerView.visibility = View.GONE
-          }
-      }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         menu.clear()
         inflater.inflate(R.menu.menu_inicio, menu)
-        val mMenuSearch = menu.findItem(R.id.menu_search).actionView as SearchView
-        mMenuSearch.isSubmitButtonEnabled = false
-        mMenuSearch.setOnQueryTextListener(this)
+
+        val searchItem = menu.findItem(R.id.menu_search).actionView as SearchView
+        searchItem.isSubmitButtonEnabled = false
+        searchItem.setOnQueryTextListener(this)
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    private fun <E> List<E>.updateUI() {
+        if (isNotEmpty()) {
+            binding.recyclerView.visibility = View.VISIBLE
+            //binding.tvNoNoteAvailable.visibility = View.GONE
+        } else {
+            binding.recyclerView.visibility = View.GONE
+            //binding.tvNoNoteAvailable.visibility = View.VISIBLE
+        }
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         if (query != null) {
             searchNote(query)
         }
-        return false
+        return true
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-
         if (newText != null) {
             searchNote(newText)
         }
         return true
     }
 
-
     private fun searchNote(query: String?) {
-        val searchQuery = "%$query%"
-        notesViewModel.buscarNota(searchQuery).observe(
-            this, { list ->
-                adaptadorNotas.differ.submitList(list)
+        if(binding.switch2.isChecked){
+            val searchQuery = "%$query%"
+            noteViewModel.buscarNota(searchQuery).observe(this) { notes ->
+                noteAdapter.differ.submitList(notes)
             }
-        )
-
-        val searchQuery2 = "%$query%"
-        tareasViewModel.buscarTarea(searchQuery).observe(
-            this, { list ->
-                adaptadorTareas.differ.submitList(list)
+        }
+        else{
+            val searchQuery = "%$query%"
+            taskViewModel.buscarTarea(searchQuery).observe(this) { tareas ->
+                taskAdapter.differ.submitList(tareas)
             }
-        )
-    }
+        }
 
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 }
+
+
+

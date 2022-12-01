@@ -7,28 +7,30 @@ import androidx.room.RoomDatabase
 import com.bersyte.noteapp.model.Note
 
 @Database(entities = [Note::class], version = 1)
-abstract class NoteDatabase: RoomDatabase() {
+abstract class NoteDatabase : RoomDatabase() {
 
     abstract fun getNoteDao(): NoteDao
 
     companion object {
+
         @Volatile
-        private var instance: NoteDatabase? = null
-        private val LOCK = Any()
+        private var INSTANCE: NoteDatabase? = null
 
-        operator fun invoke(context: Context) = instance ?:
-        synchronized(LOCK) {
-            instance ?:
-            createDatabase(context).also { instance = it }
+        fun getInstance(context: Context): NoteDatabase {
+            synchronized(this) {
+                var instance = INSTANCE
+                if (instance == null) {
+                    instance = Room.databaseBuilder(
+                        context.applicationContext,
+                        NoteDatabase::class.java,
+                        "note_db"
+                    )
+                        .fallbackToDestructiveMigration()
+                        .build()
+                    INSTANCE = instance
+                }
+                return instance
+            }
         }
-
-        private fun createDatabase(context: Context) =
-            Room.databaseBuilder(
-                context.applicationContext,
-                NoteDatabase::class.java,
-                "note_db"
-            ).build()
     }
-
-
 }
