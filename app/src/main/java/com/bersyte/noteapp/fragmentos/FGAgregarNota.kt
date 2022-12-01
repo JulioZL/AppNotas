@@ -1,11 +1,7 @@
 package com.bersyte.noteapp.fragmentos
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.*
-import android.widget.DatePicker
-import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.bersyte.noteapp.MainActivity
@@ -99,4 +95,5 @@ class FGAgregarNota : Fragment(R.layout.fg_agregar_nota) {
         super.onDestroy()
         _binding = null
     }
+
 }
