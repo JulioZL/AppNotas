@@ -7,99 +7,182 @@
     android:background="@color/background_white"
     tools:context=".fragmentos.FGActualizarNotas">
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:maxHeight="600dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_max="600dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
-        <androidx.cardview.widget.CardView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="16dp"
-            android:background="@color/white"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="8dp">
+            android:layout_height="600dp"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:background="@color/white">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/white"
+                android:elevation="8dp"
+                app:cardCornerRadius="5dp">
 
-                <EditText
-                    android:id="@+id/etNoteTitleUpdate"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:ems="10"
-                    android:hint="Titulo"
-                    android:inputType="text"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                <EditText
-                    android:id="@+id/etNoteSubTitleUpdate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:ems="10"
-                    android:hint="SubTitulo"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:inputType="text"
-                    android:textColor="@color/darkGray"
-                    android:textColorHint="@color/darkGray"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    <EditText
+                        android:id="@+id/etNoteTitleUpdate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints=""
+                        android:background="@android:color/transparent"
+                        android:hint="Titulo"
+                        android:inputType="text"
+                        android:padding="4dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/tvNoteDateUpdate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:background="@android:color/transparent"
-                    android:textColor="@color/darkGray"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"/>
+                    <EditText
+                        android:id="@+id/etNoteSubTitleUpdate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:hint="SubTitulo"
+                        android:inputType="text"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:textColor="@color/darkGray"
+                        android:textColorHint="@color/darkGray"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/etNoteBodyUpdate"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="20dp"
-                    android:background="@android:color/transparent"
-                    android:ems="10"
-                    android:gravity="start|top"
-                    android:hint="Descripción"
-                    android:inputType="textMultiLine"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/hintColor"
-                    android:textSize="16sp" />
+                    <EditText
+                        android:id="@+id/tvNoteDateUpdate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:ellipsize="end"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:maxLines="1"
+                        android:textColor="@color/darkGray" />
 
-            </LinearLayout>
+                    <EditText
+                        android:id="@+id/etNoteBodyUpdate"
+                        android:layout_width="match_parent"
+                        android:layout_height="78dp"
+                        android:layout_marginTop="16dp"
+                        android:autofillHints=""
+                        android:background="@android:color/transparent"
+                        android:gravity="start|top"
+                        android:hint="Descripcion"
+                        android:inputType="textMultiLine"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/hintColor"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/enoteImagenUpdate"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                tools:ignore="ImageContrastCheck" />
+
+            <VideoView
+                android:id="@+id/eNoteVideoUpdate"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="40dp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    <Button
+        android:id="@+id/fabImgUpdate"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        app:cornerRadius="50dp"
+        app:iconGravity="textEnd"
+        app:iconPadding="0dp"
+        app:iconSize="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/fabVideoUpdate"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+
+    <Button
+        android:id="@+id/fabVideoUpdate"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        app:cornerRadius="50dp"
+        app:iconGravity="textEnd"
+        app:iconPadding="0dp"
+        app:iconSize="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/fabAudioUpdate"
+        app:layout_constraintStart_toEndOf="@+id/fabImgUpdate"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+
+    <Button
+        android:id="@+id/fabAudioUpdate"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        app:cornerRadius="50dp"
+        app:iconGravity="textEnd"
+        app:iconPadding="0dp"
+        app:iconSize="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        tools:layout_editor_absoluteX="234dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="32dp"
-        android:clickable="true"
-        app:borderWidth="0dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="10dp"
         android:backgroundTint="@color/colorPrimary"
-        android:tintMode="@color/white"
+        android:clickable="true"
+        android:contentDescription="@string/bersyte"
         android:src="@drawable/ic_done"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:tintMode="@color/white"
+        app:borderWidth="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@string/bersyte" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/fabAudioUpdate"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

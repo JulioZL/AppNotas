@@ -12,6 +12,7 @@ import com.bersyte.noteapp.R
 import com.bersyte.noteapp.adaptador.AdaptadorNotas
 import com.bersyte.noteapp.adaptador.AdaptadorTareas
 import com.bersyte.noteapp.databinding.FgInicioBinding
+import com.bersyte.noteapp.toast
 import com.bersyte.noteapp.viewmodel.NoteViewModel
 import com.bersyte.noteapp.viewmodel.TareaViewModel
 
@@ -75,8 +76,9 @@ class FGInicio : Fragment(), SearchView.OnQueryTextListener {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    lateinit var aux:MenuItem
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if(!binding.switch2.isChecked) setUpRecyclerView2()
         binding.switch2.setOnCheckedChangeListener{ buttonView, isChecked ->
             if(isChecked){
@@ -104,7 +106,7 @@ class FGInicio : Fragment(), SearchView.OnQueryTextListener {
         val searchItem = menu.findItem(R.id.menu_search).actionView as SearchView
         searchItem.isSubmitButtonEnabled = false
         searchItem.setOnQueryTextListener(this)
-
+        aux=menu.findItem(R.id.app_bar_switch)
     }
 
     override fun onDestroy() {
@@ -115,10 +117,8 @@ class FGInicio : Fragment(), SearchView.OnQueryTextListener {
     private fun <E> List<E>.updateUI() {
         if (isNotEmpty()) {
             binding.recyclerView.visibility = View.VISIBLE
-            //binding.tvNoNoteAvailable.visibility = View.GONE
         } else {
             binding.recyclerView.visibility = View.GONE
-            //binding.tvNoNoteAvailable.visibility = View.VISIBLE
         }
     }
 

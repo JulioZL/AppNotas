@@ -19,12 +19,10 @@ import com.bersyte.noteapp.viewmodel.TareaViewModelProviderFactory
 class MainActivity : AppCompatActivity() {
 
 
-    lateinit var navController:NavController
+    lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
     lateinit var noteViewModel: NoteViewModel
-
     lateinit var tareaViewModel: TareaViewModel
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,10 +30,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-        //navController=supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container)!!
-          //  .findNavController()
-
-
         setUpViewModel()
         setUpViewModelTarea()
 
@@ -83,5 +77,4 @@ class MainActivity : AppCompatActivity() {
         )
             .get(TareaViewModel::class.java)
     }
-
 }

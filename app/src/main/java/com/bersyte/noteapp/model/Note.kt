@@ -14,7 +14,10 @@ data class Note(
     val noteTitle: String,
     val noteSubTitle: String,
     val notetvDate: String,
-    val noteBody: String
+    val noteBody: String,
+    val noteImagen: String,
+    val noteVideo: String,
+    val noteAudio: String,
 ) : Parcelable
 
 @Entity(tableName = "tareas")
