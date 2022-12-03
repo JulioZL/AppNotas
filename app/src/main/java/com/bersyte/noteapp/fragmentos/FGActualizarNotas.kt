@@ -4,9 +4,13 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.*
+import android.widget.MediaController
 import android.widget.Toast
+import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -33,7 +37,10 @@ class FGActualizarNotas : Fragment(R.layout.fg_actualizar_nota) {
     private lateinit var noteViewModel: NoteViewModel
 
     val REQUEST_IMAGE_CAPTURE  = 10
+    val REQUEST_VIDEO_CAPTURE = 20
+
     lateinit var currentVideoPath: String
+    lateinit var currentPhotoPath: String
     var photoURI: Uri? = null
     var videoURI: Uri? = null
 
@@ -53,9 +60,74 @@ class FGActualizarNotas : Fragment(R.layout.fg_actualizar_nota) {
         )
         //revisar
         //noteViewModel=(activity as MainActivity).noteViewModel
+
+        binding.fabImgUpdate.setOnClickListener {
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                takePictureIntent.resolveActivity(requireActivity().packageManager).also {
+                    // Create the File where the photo should go
+                    val photoFile: File? = try {
+                        createImageFile()
+                    } catch (ex: IOException) {
+                        // Error occurred while creating the File
+
+                        null
+                    }
+
+                    // Continue only if the File was successfully created
+                    photoFile?.also {
+                        photoURI = FileProvider.getUriForFile(
+                            requireContext(),
+                            "com.example.noteeapp.fileprovider",
+                            it
+                        )
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                    }
+                }
+            }
+        }
+
+        binding.fabVideoUpdate.setOnClickListener {
+            Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { takeVideoIntent ->
+                takeVideoIntent.resolveActivity(requireActivity().packageManager).also {
+
+                    // Create the File where the photo should go
+                    val videoFile: File? = try {
+                        createImageFile()
+                    } catch (ex: IOException) {
+                        // Error occurred while creating the File
+
+                        null
+                    }
+
+                    // Continue only if the File was successfully created
+                    videoFile?.also {
+                        videoURI = FileProvider.getUriForFile(
+                            requireContext(),
+                            "com.example.noteeapp.fileprovider",
+                            it
+                        )
+                        takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, videoURI)
+                        startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE)
+                    }
+                }
+            }
+        }
+
+        binding.eNoteVideoUpdate.setOnClickListener{
+            configureVideoView()
+        }
         return binding.root
     }
 
+    private var mediaController:MediaController?=null
+    private fun configureVideoView(){
+        binding.eNoteVideoUpdate.setVideoPath(currentVideoPath)
+        mediaController= MediaController(activity)
+        mediaController?.setAnchorView(binding.eNoteVideoUpdate)
+        binding.eNoteVideoUpdate.setMediaController(mediaController)
+        binding.eNoteVideoUpdate.start()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -84,44 +156,37 @@ class FGActualizarNotas : Fragment(R.layout.fg_actualizar_nota) {
             binding.eNoteVideoUpdate.visibility = View.VISIBLE
         }
 
-        binding.fabDone.setOnClickListener {
-            val title = binding.etNoteTitleUpdate.text.toString().trim()
-            val subTitle = binding.etNoteSubTitleUpdate.text.toString().trim()
-            val date = binding.tvNoteDateUpdate.text.toString().trim()
-            val body = binding.etNoteBodyUpdate.text.toString().trim()
-
-            var imagen = ""
-            var video = ""
-
-            if (photoURI != null){
-                imagen = photoURI.toString()
-            }
-
-            if(videoURI != null){
-                video = videoURI.toString()
-            }
-
-            if (title.isNotEmpty()) {
-                val note = Note(currentNote.id, title, subTitle, date, body, imagen, video,"")
-                noteViewModel.actualizarNota(note)
-
-                view.findNavController().navigate(R.id.action_updateNoteFragment_to_homeFragment)
-
-            } else {
-                activity?.toast("Ingresa un Titulo")
-            }
-        }
         binding.enoteImagenUpdate.setOnLongClickListener {
             val dialog = AlertDialog.Builder(requireContext())
                 .setTitle(R.string.alerta_borrarIMG_titulo)
                 .setMessage(R.string.alerta_borrarIMG_mensaje)
                 .setNegativeButton(R.string.cancelar) { view, _ ->
-                    photoURI = null
-                    binding.enoteImagenUpdate.visibility = View.GONE
                     view.dismiss()
                 }
                 .setPositiveButton(R.string.aceptar) { view, _ ->
                     Toast.makeText(requireContext(), "Se ha eliminado", Toast.LENGTH_SHORT).show()
+                    photoURI = null
+                    binding.enoteImagenUpdate.visibility = View.GONE
+                    view.dismiss()
+                }
+                .setCancelable(false)
+                .create()
+
+            dialog.show()
+            return@setOnLongClickListener false
+        }
+
+        binding.eNoteVideoUpdate.setOnLongClickListener {
+            val dialog = AlertDialog.Builder(requireContext())
+                .setTitle(R.string.alerta_borrarIMG_titulo)
+                .setMessage(R.string.alerta_borrarIMG_mensaje)
+                .setNegativeButton(R.string.cancelar) { view, _ ->
+                    view.dismiss()
+                }
+                .setPositiveButton(R.string.aceptar) { view, _ ->
+                    Toast.makeText(requireContext(), "Se ha eliminado", Toast.LENGTH_SHORT).show()
+                    binding.eNoteVideoUpdate.visibility = View.GONE
+                    photoURI = null
                     view.dismiss()
                 }
                 .setCancelable(false)
@@ -150,6 +215,35 @@ class FGActualizarNotas : Fragment(R.layout.fg_actualizar_nota) {
         }.create().show()
     }
 
+    private fun saveNote(){
+            val title = binding.etNoteTitleUpdate.text.toString().trim()
+            val subTitle = binding.etNoteSubTitleUpdate.text.toString().trim()
+            val date = binding.tvNoteDateUpdate.text.toString().trim()
+            val body = binding.etNoteBodyUpdate.text.toString().trim()
+
+            var imagen = ""
+            var video = ""
+
+            if (photoURI != null){
+                imagen = photoURI.toString()
+            }
+
+            if(videoURI != null){
+                video = videoURI.toString()
+            }
+
+            if (title.isNotEmpty()) {
+                val note = Note(currentNote.id, title, subTitle, date, body, imagen, video,"")
+                noteViewModel.actualizarNota(note)
+
+                view?.findNavController()?.navigate(R.id.action_updateNoteFragment_to_homeFragment)
+
+            } else {
+                activity?.toast("Ingresa un Titulo")
+            }
+
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
@@ -161,6 +255,9 @@ class FGActualizarNotas : Fragment(R.layout.fg_actualizar_nota) {
         when (item.itemId) {
             R.id.menu_delete -> {
                 deleteNote()
+            }
+            R.id.menu_save -> {
+                saveNote()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -180,8 +277,6 @@ class FGActualizarNotas : Fragment(R.layout.fg_actualizar_nota) {
             )
         }
     }
-
-    lateinit var currentPhotoPath: String
 
     @Throws(IOException::class)
     fun createImageFile(): File {
