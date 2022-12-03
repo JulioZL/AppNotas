@@ -7,6 +7,7 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.bersyte.noteapp.R
 
+const val id = 1001
 const val channelID = "RECORDATORIOS-TAREAS"
 const val titleExtra = "titleExtra"
 const val messageExtra = "messageExtra"
@@ -21,7 +22,7 @@ class Notification : BroadcastReceiver() {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(1001, builder)
+        notificationManager.notify(id, builder)
     }
 
 }

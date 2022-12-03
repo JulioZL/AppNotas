@@ -4,9 +4,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.support.v4.media.session.MediaControllerCompat
 import android.view.*
+import android.widget.MediaController
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.core.graphics.scaleMatrix
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.bersyte.noteapp.MainActivity
@@ -110,7 +113,7 @@ class FGAgregarNota : Fragment(R.layout.fg_agregar_nota) {
         }
 
         binding.eNoteVideo.setOnClickListener{
-            binding.eNoteVideo.start()
+            configureVideoView()
         }
 
         val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
@@ -119,6 +122,15 @@ class FGAgregarNota : Fragment(R.layout.fg_agregar_nota) {
         binding.tvDate.text = currentDate
 
         return binding.root
+    }
+
+    private var mediaController:MediaController?=null
+    private fun configureVideoView(){
+        binding.eNoteVideo.setVideoPath(currentVideoPath)
+        mediaController= MediaController(context)
+        mediaController?.setAnchorView(binding.eNoteVideo)
+        binding.eNoteVideo.setMediaController(mediaController)
+        binding.eNoteVideo.start()
     }
 
     @Throws(IOException::class)

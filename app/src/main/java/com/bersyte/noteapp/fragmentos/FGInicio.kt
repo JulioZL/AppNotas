@@ -2,6 +2,7 @@ package com.bersyte.noteapp.fragmentos
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Switch
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController

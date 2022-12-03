@@ -6,17 +6,21 @@ import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import android.provider.MediaStore
 import android.util.Log
 import android.view.*
+import android.widget.MediaController
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.bersyte.noteapp.*
@@ -28,6 +32,8 @@ import com.example.proyecto_notas.channelID
 import com.example.proyecto_notas.messageExtra
 import com.example.proyecto_notas.titleExtra
 import com.google.android.material.snackbar.Snackbar
+import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,7 +46,16 @@ class FGAgregarTarea : Fragment(R.layout.fg_agregar_tarea) {
     private lateinit var mView: View
 
     //fecha
-    var currentDate:String? = null
+    var currentDate: String? = null
+
+    //Variables para video e imagen
+    val REQUEST_IMAGE_CAPTURE = 10
+    val REQUEST_VIDEO_CAPTURE = 20
+
+    lateinit var currentVideoPath: String
+    lateinit var currentPhotoPath: String
+    var photoURI: Uri? = null
+    var videoURI: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,12 +73,95 @@ class FGAgregarTarea : Fragment(R.layout.fg_agregar_tarea) {
             false
         )
 
+        binding.fabImg.setOnClickListener {
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                takePictureIntent.resolveActivity(requireActivity().packageManager).also {
+                    // Create the File where the photo should go
+                    val photoFile: File? = try {
+                        createImageFile()
+                    } catch (ex: IOException) {
+                        // Error occurred while creating the File
+
+                        null
+                    }
+
+                    // Continue only if the File was successfully created
+                    photoFile?.also {
+                        photoURI = FileProvider.getUriForFile(
+                            requireContext(),
+                            "com.example.noteeapp.fileprovider",
+                            it
+                        )
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                    }
+                }
+            }
+        }
+
+        binding.fabVideo.setOnClickListener {
+            Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { takeVideoIntent ->
+                takeVideoIntent.resolveActivity(requireActivity().packageManager).also {
+
+                    // Create the File where the photo should go
+                    val videoFile: File? = try {
+                        createImageFile()
+                    } catch (ex: IOException) {
+                        // Error occurred while creating the File
+
+                        null
+                    }
+
+                    // Continue only if the File was successfully created
+                    videoFile?.also {
+                        videoURI = FileProvider.getUriForFile(
+                            requireContext(),
+                            "com.example.noteeapp.fileprovider",
+                            it
+                        )
+                        takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, videoURI)
+                        startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE)
+                    }
+                }
+            }
+        }
+
+        binding.eNoteVideo.setOnClickListener {
+            configureVideoView()
+        }
+
         val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
 
         currentDate = sdf.format(Date())
         binding.tvDateTarea.text = currentDate
 
         return binding.root
+    }
+
+    private var mediaController: MediaController? = null
+    private fun configureVideoView() {
+        binding.eNoteVideo.setVideoPath(currentVideoPath)
+        mediaController = MediaController(context)
+        mediaController?.setAnchorView(binding.eNoteVideo)
+        binding.eNoteVideo.setMediaController(mediaController)
+        binding.eNoteVideo.start()
+    }
+
+    @Throws(IOException::class)
+    fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        //val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val storageDir: File? = activity?.filesDir
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
+            currentVideoPath = absolutePath
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -117,14 +215,14 @@ class FGAgregarTarea : Fragment(R.layout.fg_agregar_tarea) {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun scheduleNotification(id:String){
-        val intent  = Intent(context, Notification::class.java)
-        val title =   "Recordatorio"
+    private fun scheduleNotification(id: String) {
+        val intent = Intent(context, Notification::class.java)
+        val title = "Recordatorio"
         val message = "¡Recuerda hacer tu tarea!"
-        intent.putExtra(titleExtra,title)
-        intent.putExtra(messageExtra,message)
+        intent.putExtra(titleExtra, title)
+        intent.putExtra(messageExtra, message)
 
-        var alarmManager =  activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        var alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val pendingIntent = PendingIntent.getBroadcast(
             context,
@@ -133,33 +231,34 @@ class FGAgregarTarea : Fragment(R.layout.fg_agregar_tarea) {
             0
         )
         val time = getTime()
-        alarmManager?.set(
+        alarmManager?.setExact(
             AlarmManager.RTC_WAKEUP,
-            //time,
-            SystemClock.elapsedRealtime()+10*1000,
+            time+SystemClock.elapsedRealtime()+10*1000,
+            //SystemClock.elapsedRealtime()+10*1000,
             pendingIntent
         )
-        showAlert(SystemClock.elapsedRealtime()+10*1000,title,message)
+        showAlert(SystemClock.elapsedRealtime()+10*1000, title, message)
     }
 
-    private fun showAlert(time: Long, title: String, message: String)
-    {
+    private fun showAlert(time: Long, title: String, message: String) {
         val date = Date(time)
-        val dateFormat = android.text.format.DateFormat.getLongDateFormat(requireContext().applicationContext)
-        val timeFormat = android.text.format.DateFormat.getTimeFormat(requireContext().applicationContext)
+        val dateFormat =
+            android.text.format.DateFormat.getLongDateFormat(requireContext().applicationContext)
+        val timeFormat =
+            android.text.format.DateFormat.getTimeFormat(requireContext().applicationContext)
 
         AlertDialog.Builder(this@FGAgregarTarea.requireContext())
             .setTitle("Notification Scheduled")
             .setMessage(
                 "Title: " + title +
                         "\nMessage: " + message +
-                        "\nAt: " + dateFormat.format(date) + " " + timeFormat.format(date))
-            .setPositiveButton("Okay"){_,_ ->}
+                        "\nAt: " + dateFormat.format(date) + " " + timeFormat.format(date)
+            )
+            .setPositiveButton("Okay") { _, _ -> }
             .show()
     }
 
-    private fun getTime(): Long
-    {
+    private fun getTime(): Long {
         val minute = binding.timePicker.minute
         val hour = binding.timePicker.hour
         val day = binding.datePicker.dayOfMonth
@@ -179,9 +278,22 @@ class FGAgregarTarea : Fragment(R.layout.fg_agregar_tarea) {
         val channel = NotificationChannel(channelID, name, importance)
         channel.description = desc
         //val notificationManager = NotificationManagerCompat.from(requireContext().applicationContext)
-        val notificationManager = activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
+            binding.enoteImagen.setImageURI(photoURI)
+            binding.enoteImagen.visibility = View.VISIBLE
+        }
+
+        if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
+            binding.eNoteVideo.setVideoURI(videoURI)
+            binding.eNoteVideo.visibility = View.VISIBLE
+        }
+    }
 }
