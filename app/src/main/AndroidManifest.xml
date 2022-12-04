@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NoteApp">
-        <receiver android:name="com.example.proyecto_notas.Notification"
+        <receiver android:name=".fragmentos.MiReceiverParaAlarma"
             android:enabled="true"/>
 
         <activity android:name=".MainActivity">

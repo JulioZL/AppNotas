@@ -1,5 +1,6 @@
 package com.bersyte.noteapp.fragmentos
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.app.Notification
 import android.content.Context
@@ -13,8 +14,7 @@ import android.os.SystemClock
 import android.provider.MediaStore
 import android.util.Log
 import android.view.*
-import android.widget.MediaController
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
@@ -28,9 +28,6 @@ import com.bersyte.noteapp.databinding.FgAgregarTareaBinding
 import com.bersyte.noteapp.db.TareaDatabase
 import com.bersyte.noteapp.model.Tarea
 import com.bersyte.noteapp.viewmodel.TareaViewModel
-import com.example.proyecto_notas.channelID
-import com.example.proyecto_notas.messageExtra
-import com.example.proyecto_notas.titleExtra
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.IOException
@@ -57,6 +54,9 @@ class FGAgregarTarea : Fragment(R.layout.fg_agregar_tarea) {
     var photoURI: Uri? = null
     var videoURI: Uri? = null
 
+    private lateinit var fecha: EditText
+    private lateinit var hora: EditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -72,6 +72,9 @@ class FGAgregarTarea : Fragment(R.layout.fg_agregar_tarea) {
             container,
             false
         )
+
+        fecha = binding.txtDate
+        hora = binding.txtHour
 
         binding.fabImg.setOnClickListener {
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
@@ -135,7 +138,35 @@ class FGAgregarTarea : Fragment(R.layout.fg_agregar_tarea) {
         currentDate = sdf.format(Date())
         binding.tvDateTarea.text = currentDate
 
+        //Date and hour
+        binding.date.setOnClickListener {
+            showDatePickerDialog()
+        }
+
+        binding.hour.setOnClickListener {
+            showTimePikerDialog()
+        }
+
         return binding.root
+    }
+
+    private fun showTimePikerDialog() {
+        val newFragment = TimePicker { onTimeSelected(it) }
+        activity?.let { newFragment.show(it.supportFragmentManager, "timePicker") }
+    }
+
+    private fun onTimeSelected(time: String) {
+        hora.setText(time)
+    }
+
+    private fun showDatePickerDialog() {
+        val newFragment = DatePicker { day, month, year -> onDateSelected(day, month, year) }
+        activity?.let { newFragment.show(it.supportFragmentManager, "datePicker") }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun onDateSelected(day: Int, month: Int, year: Int) {
+        fecha.setText("$day/$month/$year")
     }
 
     private var mediaController: MediaController? = null
@@ -178,7 +209,7 @@ class FGAgregarTarea : Fragment(R.layout.fg_agregar_tarea) {
 
         if (tareaTitle.isNotEmpty()) {
             val tarea = Tarea(0, tareaTitle, tareaSubTitle, tareatvDate, tareaBody)
-            scheduleNotification(tareaTitle)
+            scheduleNotificaction(tareaTitle)
             createNotificationChannel()
 
             tareaViewModel.agregarTarea(tarea)
@@ -214,30 +245,42 @@ class FGAgregarTarea : Fragment(R.layout.fg_agregar_tarea) {
         _binding = null
     }
 
+    // Notification
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel() {
+        val name = "Notif Channel"
+        val desc = "A description of the Channel"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(channelID, name, importance)
+        channel.description = desc
+        val notificationManager =
+            activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun scheduleNotification(id: String) {
-        val intent = Intent(context, Notification::class.java)
-        val title = "Recordatorio"
-        val message = "¡Recuerda hacer tu tarea!"
-        intent.putExtra(titleExtra, title)
+    private fun scheduleNotificaction(titulo: String) {
+        val intent = Intent(context, MiReceiverParaAlarma::class.java)
+        val message = "Tienes esta tarea pendiente"
+        intent.putExtra(titleExtra, titulo)
         intent.putExtra(messageExtra, message)
 
-        var alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val pendingIntent = PendingIntent.getBroadcast(
             context,
-            1001,
+            notificationID,
             intent,
             0
         )
-        val time = getTime()
-        alarmManager?.setExact(
-            AlarmManager.RTC_WAKEUP,
-            time+SystemClock.elapsedRealtime()+10*1000,
-            //SystemClock.elapsedRealtime()+10*1000,
+
+        // val time = getTime()
+        alarmManager.set(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            //time,
+            SystemClock.elapsedRealtime() + 10 * 1000,
             pendingIntent
         )
-        showAlert(SystemClock.elapsedRealtime()+10*1000, title, message)
     }
 
     private fun showAlert(time: Long, title: String, message: String) {
@@ -256,31 +299,6 @@ class FGAgregarTarea : Fragment(R.layout.fg_agregar_tarea) {
             )
             .setPositiveButton("Okay") { _, _ -> }
             .show()
-    }
-
-    private fun getTime(): Long {
-        val minute = binding.timePicker.minute
-        val hour = binding.timePicker.hour
-        val day = binding.datePicker.dayOfMonth
-        val month = binding.datePicker.month
-        val year = binding.datePicker.year
-
-        val calendar = Calendar.getInstance()
-        calendar.set(year, month, day, hour, minute)
-        return calendar.timeInMillis
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel() {
-        val name = "Notif Channel"
-        val desc = "A Description of the Channel"
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channel = NotificationChannel(channelID, name, importance)
-        channel.description = desc
-        //val notificationManager = NotificationManagerCompat.from(requireContext().applicationContext)
-        val notificationManager =
-            activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
