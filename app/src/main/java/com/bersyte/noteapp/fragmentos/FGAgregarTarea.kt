@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import android.provider.ContactsContract.SyncState.set
 import android.provider.MediaStore
 import android.util.Log
 import android.view.*
@@ -31,6 +32,7 @@ import com.bersyte.noteapp.viewmodel.TareaViewModel
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.IOException
+import java.lang.reflect.Array.set
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -41,6 +43,13 @@ class FGAgregarTarea : Fragment(R.layout.fg_agregar_tarea) {
     private val binding get() = _binding!!
     private lateinit var tareaViewModel: TareaViewModel
     private lateinit var mView: View
+
+    private var diaAux=0
+    private var mesAux=0
+    private var anioAux=0
+
+    private var horaAux=0
+    private var minutosAux=0
 
     //fecha
     var currentDate: String? = null
@@ -60,6 +69,7 @@ class FGAgregarTarea : Fragment(R.layout.fg_agregar_tarea) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
     }
 
     override fun onCreateView(
@@ -151,12 +161,14 @@ class FGAgregarTarea : Fragment(R.layout.fg_agregar_tarea) {
     }
 
     private fun showTimePikerDialog() {
-        val newFragment = TimePicker { onTimeSelected(it) }
+        val newFragment = TimePicker { hour, minute -> onTimeSelected(hour, minute) }
         activity?.let { newFragment.show(it.supportFragmentManager, "timePicker") }
     }
 
-    private fun onTimeSelected(time: String) {
-        hora.setText(time)
+    private fun onTimeSelected(hour:Int, minute:Int) {
+        hora.setText("$hour:$minute")
+        this.horaAux=hour
+        this.minutosAux=minute
     }
 
     private fun showDatePickerDialog() {
@@ -166,7 +178,12 @@ class FGAgregarTarea : Fragment(R.layout.fg_agregar_tarea) {
 
     @SuppressLint("SetTextI18n")
     private fun onDateSelected(day: Int, month: Int, year: Int) {
-        fecha.setText("$day/$month/$year")
+        var aux=month+1
+        fecha.setText("$day/$aux/$year")
+
+        this.diaAux=day
+        this.mesAux=month
+        this.anioAux=year
     }
 
     private var mediaController: MediaController? = null
@@ -210,7 +227,7 @@ class FGAgregarTarea : Fragment(R.layout.fg_agregar_tarea) {
         if (tareaTitle.isNotEmpty()) {
             val tarea = Tarea(0, tareaTitle, tareaSubTitle, tareatvDate, tareaBody)
             scheduleNotificaction(tareaTitle)
-            createNotificationChannel()
+
 
             tareaViewModel.agregarTarea(tarea)
             Snackbar.make(
@@ -245,60 +262,28 @@ class FGAgregarTarea : Fragment(R.layout.fg_agregar_tarea) {
         _binding = null
     }
 
-    // Notification
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel() {
-        val name = "Notif Channel"
-        val desc = "A description of the Channel"
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channel = NotificationChannel(channelID, name, importance)
-        channel.description = desc
-        val notificationManager =
-            activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
-    }
-
     @RequiresApi(Build.VERSION_CODES.M)
     private fun scheduleNotificaction(titulo: String) {
-        val intent = Intent(context, MiReceiverParaAlarma::class.java)
-        val message = "Tienes esta tarea pendiente"
-        intent.putExtra(titleExtra, titulo)
-        intent.putExtra(messageExtra, message)
-
-        val alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        val pendingIntent = PendingIntent.getBroadcast(
-            context,
-            notificationID,
-            intent,
-            0
-        )
-
-        // val time = getTime()
-        alarmManager.set(
-            AlarmManager.ELAPSED_REALTIME_WAKEUP,
-            //time,
-            SystemClock.elapsedRealtime() + 10 * 1000,
-            pendingIntent
-        )
+        getTime(titulo)
     }
 
-    private fun showAlert(time: Long, title: String, message: String) {
-        val date = Date(time)
-        val dateFormat =
-            android.text.format.DateFormat.getLongDateFormat(requireContext().applicationContext)
-        val timeFormat =
-            android.text.format.DateFormat.getTimeFormat(requireContext().applicationContext)
+    private fun startAlarm(calendar: Calendar, titulo: String) {
+        val alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, MiReceiverParaAlarma::class.java)
+        val message = "Tienes esta tarea pendiente"
+        intent.putExtra(tituloExtra2, titulo)
+        intent.putExtra(mensajeExtra2, message)
+        val pendingIntent = PendingIntent.getBroadcast(context, notificationID, intent, 0)
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+    }
 
-        AlertDialog.Builder(this@FGAgregarTarea.requireContext())
-            .setTitle("Notification Scheduled")
-            .setMessage(
-                "Title: " + title +
-                        "\nMessage: " + message +
-                        "\nAt: " + dateFormat.format(date) + " " + timeFormat.format(date)
-            )
-            .setPositiveButton("Okay") { _, _ -> }
-            .show()
+    private fun getTime(titulo: String){
+
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY,horaAux)
+        calendar.set(Calendar.MINUTE,minutosAux)
+        calendar.set(Calendar.SECOND,0)
+        startAlarm(calendar, titulo)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

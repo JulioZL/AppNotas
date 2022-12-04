@@ -10,23 +10,22 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
+import com.bersyte.noteapp.MainActivity
+import com.bersyte.noteapp.databinding.FgAgregarTareaBinding
 
 
-const val notificationID = 1001
-const val channelID = "channel1"
-const val titleExtra =  "TitleExtra"
-const val messageExtra = "messageExtra"
-class MiReceiverParaAlarma : BroadcastReceiver () {
-    override fun onReceive(context : Context, intent : Intent) {
-     val notification = NotificationCompat.Builder(context, channelID)
-         .setSmallIcon(R.drawable.alert_dark_frame)
-         .setContentTitle(intent.getStringExtra(titleExtra))
-         .setContentText(intent.getStringExtra(messageExtra))
-         .build()
+var notificationID = 1
+ val tituloExtra2 ="Tarea Pendiente"
+const val mensajeExtra2 = "messageExtra"
 
-        val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        manager.notify(notificationID, notification)
+class MiReceiverParaAlarma : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+        val notificationUtils = NotificationUtils(context)
+        val notification = notificationUtils.getNotificationBuilder(tituloExtra2).build()
+        notificationUtils.getManager().notify(notificationID++, notification)
     }
 }

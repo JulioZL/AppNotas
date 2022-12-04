@@ -17,7 +17,7 @@ class DatePicker (val listener: (day:Int, month:Int, year:Int) -> Unit): DialogF
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val c: Calendar = Calendar.getInstance()
         val day: Int = c.get(Calendar.DAY_OF_MONTH)
-        val month: Int = c.get(Calendar.MONTH)
+        var month: Int = c.get(Calendar.MONTH)
         val year: Int = c.get(Calendar.YEAR)
 
         return DatePickerDialog(activity as Context, this, year, month, day)
