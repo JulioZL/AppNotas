@@ -1,6 +1,7 @@
 package com.bersyte.noteapp.adaptador
 
 import android.graphics.Color
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
@@ -55,12 +56,7 @@ class AdaptadorTareas : RecyclerView.Adapter<AdaptadorTareas.TareaViewHolder>() 
         holder.itemBinding.tvTareaSubTitle.text = currentTarea.tareaSubTitle
         holder.itemBinding.tvTareaDate.text = currentTarea.tareatvDate
         holder.itemBinding.tvTareaBody.text = currentTarea.tareaBody
-        val random = Random()
-        /*val color =
-            Color.argb(
-                255, random.nextInt(256),
-                random.nextInt(256), random.nextInt(256)
-            )*/
+
         val color = Color.RED
         holder.itemBinding.ibColor.setBackgroundColor(color)
 

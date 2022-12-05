@@ -13,4 +13,34 @@
     <string name="aceptar">ACEPTAR</string>
     <string name="alerta_borrarVIDEO_titulo">Eliminar video</string>
     <string name="alerta_borrarVIDEO_mensaje">¿Estas seguro de querer eliminar el video?</string>
+
+
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="titulo">Titulo</string>
+    <string name="descripcion">Descripcion</string>
+    <string name="clip">clip</string>
+    <string name="guardar">Guardar</string>
+    <string name="delete">delete</string>
+    <string name="edit">Edit</string>
+    <string name="type">Type</string>
+    <string name="fecha_inicio">Fecha Inicio</string>
+    <string name="fecha_fin">Fecha Fin</string>
+    <string name="hora">Hora</string>
+    <string name="fecha">Fecha</string>
+    <string name="photo">photo</string>
+    <string name="tomar_foto">Tomar Foto</string>
+    <string name="tomar_video">Tomar video</string>
+    <string name="grabar_audio">Grabar Audio</string>
+    <string name="audio_onda">Onda de audio</string>
+    <string name="start_recording">Start recording</string>
+    <string name="salir">Salir</string>
+    <string name="recordatorio_listo">Recordatorio listo</string>
+    <string name="ver_multimedia">Ver multimedia</string>
+    <string name="volver">Volver</string>
+    <string name="establecer_recordatorio">Establecer recordatorio</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="buscar">buscar</string>
+    <string name="buscar_por_titulo">Buscar por titulo</string>
 </resources>

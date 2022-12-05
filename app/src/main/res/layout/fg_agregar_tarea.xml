@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_white"
-    tools:context=".fragmentos.FGAgregarNota">
+    tools:context=".fragmentos.FGAgregarTarea">
 
     <ScrollView
         android:id="@+id/scrollView3"
@@ -14,7 +14,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:maxHeight="650dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_max="650dp"
         app:layout_constraintHorizontal_bias="0.0"
@@ -88,7 +87,7 @@
                     <EditText
                         android:id="@+id/etTareaBody"
                         android:layout_width="match_parent"
-                        android:layout_height="128dp"
+                        android:layout_height="173dp"
                         android:layout_marginTop="20dp"
                         android:background="@android:color/transparent"
                         android:ems="10"
@@ -153,65 +152,52 @@
                         tools:ignore="SpeakableTextPresentCheck" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-            <ImageView
-                android:id="@+id/enoteImagen"
-                android:layout_width="270dp"
-                android:layout_height="238dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:visibility="gone"
-                tools:ignore="ImageContrastCheck" />
-
-            <VideoView
-                android:id="@+id/eNoteVideo"
-                android:layout_width="272dp"
-                android:layout_height="178dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="40dp"
-                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="114dp"
-        android:gravity="center"
-        android:orientation="horizontal"
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/grupoFlotanteT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <Button
-            android:id="@+id/fabImg"
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnAudioT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:cornerRadius="50dp"
-            app:iconGravity="textEnd"
-            app:iconPadding="0dp" />
+            app:fab_colorNormal="#C9B8F1"
+            app:fab_icon="@drawable/microfono"
+            app:fab_size="mini" />
 
-        <Button
-            android:id="@+id/fabVideo"
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnFotoT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:cornerRadius="50dp"
-            app:iconGravity="textEnd"
-            app:iconPadding="0dp" />
+            app:fab_colorNormal="#C9B8F1"
+            app:fab_icon="@drawable/camara_24"
+            app:fab_size="mini" />
 
-        <Button
-            android:id="@+id/fabAudio"
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnVideoT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:cornerRadius="50dp"
-            app:iconGravity="textEnd"
-            app:iconPadding="0dp" />
+            app:fab_colorNormal="#C9B8F1"
+            app:fab_icon="@drawable/video"
+            app:fab_size="mini" />
 
-    </LinearLayout>
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
+    <Button
+        android:id="@+id/multimediaTask"
+        android:layout_width="240sp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:text="@string/ver_multimedia"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/grupoFlotanteT"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
