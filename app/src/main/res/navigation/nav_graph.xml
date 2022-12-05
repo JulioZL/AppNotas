@@ -51,6 +51,15 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_newNoteFragment_to_photoFragment"
+            app:destination="@id/photoFragment" />
+        <action
+            android:id="@+id/action_newNoteFragment_to_videoFragment"
+            app:destination="@id/videoFragment" />
+        <action
+            android:id="@+id/action_newNoteFragment_to_audio"
+            app:destination="@id/audio" />
     </fragment>
 
 
@@ -66,6 +75,25 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_createTask_to_photoFragment"
+            app:destination="@id/photoFragment" />
+        <action
+            android:id="@+id/action_newTareaFragment_to_videoFragment"
+            app:destination="@id/videoFragment" />
+        <action
+            android:id="@+id/action_newTareaFragment_to_audio"
+            app:destination="@id/audio" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/photoFragment"
+        android:name="com.bersyte.noteapp.fragmentos.PhotoFragment"
+        android:label="fragment_photo"
+        tools:layout="@layout/fragment_photo" >
+        <!--<action
+            android:id="@+id/action_photoFragment_to_createNote"
+            app:destination="@id/createNote" />-->
     </fragment>
 
     <fragment
@@ -84,6 +112,18 @@
             android:name="note"
             app:argType="com.bersyte.noteapp.model.Note"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_updateNoteFragment_to_viewMultimediaFragment"
+            app:destination="@id/viewMultimediaFragment" />
+        <action
+            android:id="@+id/action_updateNoteFragment_to_photoFragment"
+            app:destination="@id/photoFragment" />
+        <action
+            android:id="@+id/action_updateNoteFragment_to_videoFragment"
+            app:destination="@id/videoFragment" />
+        <action
+            android:id="@+id/action_updateNoteFragment_to_audio"
+            app:destination="@id/audio" />
     </fragment>
 
     <fragment
@@ -98,10 +138,62 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_updateTask_to_photoFragment"
+            app:destination="@id/photoFragment" />
         <argument
             android:name="tarea"
             app:argType="com.bersyte.noteapp.model.Tarea"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_updateTareaFragment_to_viewMultimediaFragment"
+            app:destination="@id/viewMultimediaFragment" />
+        <action
+            android:id="@+id/action_updateTareaFragment_to_videoFragment"
+            app:destination="@id/videoFragment" />
+        <action
+            android:id="@+id/action_updateTareaFragment_to_audio"
+            app:destination="@id/audio" />
     </fragment>
+    <fragment
+        android:id="@+id/viewMultimediaFragment"
+        android:name="com.bersyte.noteapp.fragmentos.ViewMultimediaFragment"
+        android:label="fragment_view_multimedia"
+        tools:layout="@layout/fragment_view_multimedia" >
+        <action
+            android:id="@+id/action_viewMultimediaFragment_to_viewVideoFragment"
+            app:destination="@id/viewVideoFragment" />
+        <action
+            android:id="@+id/action_viewMultimediaFragment_to_viewPhotoFragment"
+            app:destination="@id/viewPhotoFragment" />
+        <action
+            android:id="@+id/action_viewMultimediaFragment_to_viewAudioFragment"
+            app:destination="@id/viewAudioFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewPhotoFragment"
+        android:name="com.bersyte.noteapp.fragmentos.ViewPhotoFragment"
+        android:label="fragment_view_photo"
+        tools:layout="@layout/fragment_view_photo" />
+    <fragment
+        android:id="@+id/videoFragment"
+        android:name="com.bersyte.noteapp.fragmentos.VideoFragment"
+        android:label="fragment_video"
+        tools:layout="@layout/fragment_video" />
+    <fragment
+        android:id="@+id/viewVideoFragment"
+        android:name="com.bersyte.noteapp.fragmentos.ViewVideoFragment"
+        android:label="fragment_view_video"
+        tools:layout="@layout/fragment_view_video" />
+    <fragment
+        android:id="@+id/audio"
+        android:name="com.bersyte.noteapp.fragmentos.Audio"
+        android:label="fragment_audio"
+        tools:layout="@layout/fragment_audio" />
+    <fragment
+        android:id="@+id/viewAudioFragment"
+        android:name="com.bersyte.noteapp.fragmentos.ViewAudioFragment"
+        android:label="fragment_view_audio"
+        tools:layout="@layout/fragment_view_audio" />
 
 </navigation>

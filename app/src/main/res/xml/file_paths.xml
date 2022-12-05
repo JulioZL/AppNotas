@@ -5,4 +5,11 @@
     <files-path
         name="mis_archivos"
         path="/"/>
+
+    <files-path
+        name="photos"
+        path="/photos/"></files-path>
+    <external-files-path
+        name="videos"
+        path="/"></external-files-path>
 </paths>

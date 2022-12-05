@@ -2,13 +2,10 @@ package com.bersyte.noteapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import com.bersyte.noteapp.databinding.ActivityMainBinding
 import com.bersyte.noteapp.db.NoteDatabase
-import com.bersyte.noteapp.db.TareaDatabase
 import com.bersyte.noteapp.repositorio.RepositorioNotas
 import com.bersyte.noteapp.repositorio.RepositorioTareas
 import com.bersyte.noteapp.viewmodel.NoteViewModel
@@ -35,12 +32,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onBackPressed() {
+    /*override fun onBackPressed() {
         if (navController.currentDestination?.id == R.id.updateNoteFragment) {
             this.toast("No Updates")
         }
         super.onBackPressed()
-    }
+    }*/
 
     private fun setUpViewModel() {
         val noteDataBase = NoteDatabase.getInstance(this)
@@ -61,7 +58,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpViewModelTarea() {
-        val tareaDataBase = TareaDatabase.getInstance(this)
+        val tareaDataBase = NoteDatabase.getInstance(this)
         val tareaRepository = RepositorioTareas(
             tareaDataBase
         )
