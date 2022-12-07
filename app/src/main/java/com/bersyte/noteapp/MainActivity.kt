@@ -1,6 +1,7 @@
 package com.bersyte.noteapp
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -31,13 +32,6 @@ class MainActivity : AppCompatActivity() {
         setUpViewModelTarea()
 
     }
-
-    /*override fun onBackPressed() {
-        if (navController.currentDestination?.id == R.id.updateNoteFragment) {
-            this.toast("No Updates")
-        }
-        super.onBackPressed()
-    }*/
 
     private fun setUpViewModel() {
         val noteDataBase = NoteDatabase.getInstance(this)

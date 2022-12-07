@@ -87,7 +87,7 @@
                     <EditText
                         android:id="@+id/etTareaBodyUpdate"
                         android:layout_width="match_parent"
-                        android:layout_height="173dp"
+                        android:layout_height="299dp"
                         android:layout_marginTop="20dp"
                         android:background="@android:color/transparent"
                         android:ems="10"
@@ -98,58 +98,67 @@
                         android:textColorHint="@color/hintColor"
                         android:textSize="16sp" />
 
-                    <Button
-                        android:id="@+id/date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="6dp"
-                        android:layout_marginEnd="2dp"
-                        android:text="Fecha"
-                        app:layout_constraintEnd_toStartOf="@+id/txtDate"
-                        app:layout_constraintStart_toStartOf="parent" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/txtDate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:importantForAutofill="no"
-                        android:inputType="date"
-                        android:minHeight="48dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/date"
-                        app:layout_constraintTop_toTopOf="@+id/date"
-                        tools:ignore="SpeakableTextPresentCheck" />
+                        <Button
+                            android:id="@+id/date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginEnd="2dp"
+                            android:text="Fecha"
+                            app:layout_constraintStart_toStartOf="parent" />
 
-                    <Button
-                        android:id="@+id/hour"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginEnd="2dp"
-                        android:text="Hora"
-                        app:layout_constraintEnd_toStartOf="@+id/txtHour"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/date" />
+                        <EditText
+                            android:id="@+id/txtDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:ems="10"
+                            android:focusable="false"
+                            android:importantForAutofill="no"
+                            android:inputType="date"
+                            android:minHeight="48dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/date"
+                            app:layout_constraintTop_toTopOf="@+id/date"
+                            tools:ignore="SpeakableTextPresentCheck" />
+                    </LinearLayout>
 
-                    <EditText
-                        android:id="@+id/txtHour"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:importantForAutofill="no"
-                        android:inputType="date"
-                        android:minHeight="48dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/hour"
-                        app:layout_constraintTop_toTopOf="@+id/hour"
-                        tools:ignore="SpeakableTextPresentCheck" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/hour"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginEnd="2dp"
+                            android:text="Hora"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <EditText
+                            android:id="@+id/txtHour"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:ems="10"
+                            android:focusable="false"
+                            android:importantForAutofill="no"
+                            android:inputType="date"
+                            android:minHeight="48dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/hour"
+                            app:layout_constraintTop_toTopOf="@+id/hour"
+                            tools:ignore="SpeakableTextPresentCheck" />
+                    </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
@@ -167,24 +176,24 @@
             android:id="@+id/btnAudioT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_colorNormal="#C9B8F1"
-            app:fab_icon="@drawable/microfono"
+            app:fab_colorNormal="#5086c1"
+            app:fab_icon="@drawable/ic_microfono"
             app:fab_size="mini" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnFotoT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_colorNormal="#C9B8F1"
-            app:fab_icon="@drawable/camara_24"
+            app:fab_colorNormal="#5086c1"
+            app:fab_icon="@drawable/ic_camara_fotos"
             app:fab_size="mini" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnVideoT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_colorNormal="#C9B8F1"
-            app:fab_icon="@drawable/video"
+            app:fab_colorNormal="#5086c1"
+            app:fab_icon="@drawable/ic_camara_video"
             app:fab_size="mini" />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>

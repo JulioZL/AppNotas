@@ -80,9 +80,10 @@
                     android:layout_weight="200"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/darkGray"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColorHint="@color/darkGray"/>
             </LinearLayout>
 
             <TextView

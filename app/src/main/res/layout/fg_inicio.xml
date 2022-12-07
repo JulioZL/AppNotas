@@ -70,16 +70,16 @@
             android:id="@+id/fabAddTask"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/colorAccent"
-            app:fab_icon="@drawable/ic_addnote"
+            app:fab_colorNormal="#5086c1"
+            app:fab_icon="@drawable/ic_agregar_tarea"
             app:fab_size="mini" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabAddNote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/colorAccent"
-            app:fab_icon="@drawable/ic_addnote"
+            app:fab_colorNormal="#5086c1"
+            app:fab_icon="@drawable/ic_agregar_nota"
             app:fab_size="mini" />
 
 

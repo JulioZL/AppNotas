@@ -107,7 +107,6 @@ class FGInicio : Fragment(), SearchView.OnQueryTextListener {
         val searchItem = menu.findItem(R.id.menu_search).actionView as SearchView
         searchItem.isSubmitButtonEnabled = false
         searchItem.setOnQueryTextListener(this)
-        aux=menu.findItem(R.id.app_bar_switch)
     }
 
     override fun onDestroy() {
