@@ -87,7 +87,7 @@
                     <EditText
                         android:id="@+id/etNoteBodyUpdate"
                         android:layout_width="match_parent"
-                        android:layout_height="394dp"
+                        android:layout_height="400dp"
                         android:layout_marginTop="20dp"
                         android:background="@android:color/transparent"
                         android:ems="10"
@@ -114,24 +114,24 @@
             android:id="@+id/btnAudioT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_colorNormal="#C9B8F1"
-            app:fab_icon="@drawable/microfono"
+            app:fab_colorNormal="#5086c1"
+            app:fab_icon="@drawable/ic_microfono"
             app:fab_size="mini" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnFotoT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_colorNormal="#C9B8F1"
-            app:fab_icon="@drawable/camara_24"
+            app:fab_colorNormal="#5086c1"
+            app:fab_icon="@drawable/ic_camara_fotos"
             app:fab_size="mini" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnVideoT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_colorNormal="#C9B8F1"
-            app:fab_icon="@drawable/video"
+            app:fab_colorNormal="#5086c1"
+            app:fab_icon="@drawable/ic_camara_video"
             app:fab_size="mini" />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>

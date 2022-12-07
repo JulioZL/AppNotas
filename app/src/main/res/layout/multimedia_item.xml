@@ -3,11 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="90sp">
+    android:layout_height="90sp"
+    android:layout_margin="5dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewM"
-        android:layout_width="350sp"
+        android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_margin="10sp"
         android:elevation="5sp">
@@ -24,6 +25,7 @@
                 android:layout_marginTop="38dp"
                 android:layout_marginBottom="38dp"
                 android:text="@string/descripcion"
+                android:hint="@string/descripcion"
                 android:textColor="@color/black"
                 android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -41,7 +43,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_done" />
+                app:srcCompat="@drawable/ic_marco_foto" />
 
             <ImageView
                 android:id="@+id/delete"

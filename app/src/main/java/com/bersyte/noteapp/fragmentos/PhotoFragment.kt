@@ -4,11 +4,12 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +17,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import com.bersyte.noteapp.R
+import androidx.core.graphics.drawable.toBitmap
+import androidx.fragment.app.Fragment
 import com.bersyte.noteapp.databinding.FragmentPhotoBinding
 import com.bersyte.noteapp.db.NoteDatabase
 import com.bersyte.noteapp.model.Multimedia
-import com.bersyte.noteapp.model.Tarea
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat

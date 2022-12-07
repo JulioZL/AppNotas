@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
-        android:text="@string/grabar_audio"
+        android:text=""
         android:textColor="#000"
         android:textSize="32sp"
         android:textStyle="bold" />
@@ -19,24 +19,27 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="226dp"
-        android:layout_height="117dp"
+        android:layout_width="342dp"
+        android:layout_height="246dp"
         android:layout_below="@+id/textview_sound_recorder_heading"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="78dp"
-        android:layout_marginTop="99dp"
-        android:layout_marginEnd="82dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="50dp"
         android:contentDescription="@string/photo"
-        android:src="@drawable/sonido" />
+        android:src="@drawable/ic_ondas" />
 
     <EditText
         android:id="@+id/descriptionAudio"
         android:layout_width="355dp"
         android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="270dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="150dp"
         android:ems="10"
         android:hint="@string/descripcion"
         android:importantForAutofill="no"

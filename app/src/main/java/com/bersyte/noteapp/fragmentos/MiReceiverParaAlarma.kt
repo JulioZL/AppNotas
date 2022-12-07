@@ -25,7 +25,9 @@ const val mensajeExtra2 = "messageExtra"
 class MiReceiverParaAlarma : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val notificationUtils = NotificationUtils(context)
-        val notification = notificationUtils.getNotificationBuilder(tituloExtra2).build()
+        val notification = notificationUtils.getNotificationBuilder(tituloExtra2, notificationID++, mensajeExtra2)
+            .setContentTitle(intent.getStringExtra(tituloExtra2))
+            .build()
         notificationUtils.getManager().notify(notificationID++, notification)
     }
 }
